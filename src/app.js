@@ -24,7 +24,7 @@ app.post("/otp", (req, res) => {
     otp: ran,
   };
   db.checkUser(user).then((r) => {
-    res.status(r.status).json(r);
+    res.status(r.status).json(r.msg);
   });
 });
 
