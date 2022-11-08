@@ -96,8 +96,7 @@
                 -->
               <div
                 id="umenu1"
-                style="opacity: 0;"
-                class="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2"
+                class="hidden absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 transition ease-out duration-200 opacity-0 translate-y-1"
               >
                 <div
                   class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5"
@@ -368,8 +367,8 @@
                 -->
               <div
                 id="umenu2"
-                style="opacity: 0;"
-                class="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0"
+               
+                class="hidden absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0 transition-all duration-500 opacity-0 translate-y-1"
               >
                 <div
                   class="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5"
@@ -782,11 +781,11 @@
     </div>
     <!-- second part -->
     <div class="bg-white py-12">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 lg:my-20 ">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 my-10 ">
           <div class="lg:text-center ">
             <h2 class="text-lg font-semibold text-indigo-600">Transactions</h2>
             <p class="mt-2 text-3xl font-bold leading-8 tracking-tight text-gray-900 sm:text-4xl">A better way to send money</p>
-            <p class="mt-11 mb-14 max-w-2xl text-xl text-gray-500 lg:mx-auto">Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in accusamus quisquam.</p>
+            <p class="mt-11 mb-20 max-w-2xl text-xl text-gray-500 lg:mx-auto">Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in accusamus quisquam.</p>
           </div>
       
           <div class="mt-10">
@@ -915,7 +914,7 @@
           </div>
         </div>
         <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-          <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:h-full lg:w-full" src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80" alt="">
+          <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:h-full lg:w-full" src="https://images.unsplash.com/photo-1499914485622-a88fac536970?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1980&ixid=MnwxfDB8MXxyYW5kb218MHx8Y29tcHV0ZXJ8fHx8fHwxNjY3ODk3Mjgy&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=2850" alt="">
         </div>
       </div>
       <!-- fourth part -->
@@ -927,25 +926,25 @@
       const umenu2 = document.getElementById("umenu2");
 
       menu.addEventListener("click", () => {
-        umenu.style.transition = "all 100ms ease-out";
-        umenu.style.opacity = "100";
+        umenu.classList.remove("hidden","opacity-0","translate-y-1")
+        umenu.classList.add("opacity-100","translate-y-0")
       });
-
+      
       umenu.addEventListener("mouseleave", () => {
-        umenu.style.transition = "all 100ms ease-out";
-        umenu.style.opacity = "0";
+        umenu.classList.add("hidden", "opacity-0", "translate-y-1")
+        umenu.classList.remove("opacity-100", "translate-y-0")
       });
       
       //2nd Menu
-
+      
       menu2.addEventListener("click", () => {
-        umenu2.style.transition = "all 100ms ease-out";
-        umenu2.style.opacity = "100";
+        umenu2.classList.remove("hidden","opacity-0","translate-y-1")
+        umenu2.classList.add("opacity-100","translate-y-0")
       });
-
+      
       umenu2.addEventListener("mouseleave", () => {
-        umenu2.style.transition = "all 100ms ease-out";
-        umenu2.style.opacity = "0";
+        umenu2.classList.add("hidden", "opacity-0", "translate-y-1")
+        umenu2.classList.remove("opacity-100", "translate-y-0")
       });
     </script>
   </body>
