@@ -1,0 +1,24 @@
+{
+  "name": "promject",
+  "version": "1.0.0",
+  "description": "Final Year Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakshit47/Promject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rakshit47/Promject/issues"
+  },
+  "homepage": "https://github.com/rakshit47/Promject#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
