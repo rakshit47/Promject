@@ -61,8 +61,8 @@
           </p>
         </div>
         <form class="mt-8 space-y-6" action="#" method="POST">
-          <input type="hidden" name="remember" value="true" />
-          <div class="-space-y-px rounded-md shadow-sm">
+          <!-- <input type="hidden" name="remember" value="true" /> -->
+          <div class="-space-y rounded-md">
             <div>
               <label for="email-address" class="sr-only">Email address</label>
               <input
@@ -71,16 +71,21 @@
                 type="email"
                 autocomplete="email"
                 required
-                class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                class="relative disabled:opacity-75 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                 placeholder="Email address"
               />
             </div>
+            <p
+              id="email-err"
+              class="hidden pt-4 pl-1 mt-2 text-center text-sm font-medium text-red-600"
+            ></p>
           </div>
 
           <div>
             <button
+              id="btn"
               type="submit"
-              class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              class="group disabled:opacity-75 disabled:cursor-not-allowed relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <!-- Heroicon name: mini/lock-closed -->
@@ -103,7 +108,132 @@
             </button>
           </div>
         </form>
+        <div class="-space-y-5 rounded-md">
+          <div>
+            <label for="otp" class="sr-only">Enter OTP</label>
+            <input
+              id="otp"
+              name="otp"
+              type="otp"
+              autocomplete="otp"
+              required
+              class="hidden relative w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm transition-all"
+              placeholder="OTP"
+            />
+          </div>
+        </div>
+        <button
+          id="obtn"
+          type="submit"
+          class="hidden group disabled:opacity-75 relative w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <!-- Heroicon name: mini/lock-closed -->
+            <svg
+              class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+              />
+            </svg>
+          </span>
+          Verify
+        </button>
       </div>
     </div>
+    <script>
+      const btn = document.getElementById("btn");
+      const obtn = document.getElementById("obtn");
+      const otp = document.getElementById("otp");
+      const email = document.getElementById("email-address");
+      const msg = document.getElementById("email-err");
+
+      email.addEventListener("keyup", (e) => {
+        msg.textContent = "";
+        if (btn.disabled) btn.disabled = false;
+        let data = {
+          email: email.value,
+        };
+        msg.classList.add("hidden");
+        if (email.classList.contains("bg-red-200"))
+          email.classList.remove("bg-red-200");
+        fetch("/check-user", {
+          method: "post",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((res) => res.json())
+          .then((data1) => {
+            if (data1) email.classList.add("bg-red-200");
+            msg.classList.remove("hidden");
+            msg.textContent = data1;
+            btn.disabled = true;
+          });
+      });
+
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        let data = {
+          email: email.value,
+        };
+        fetch("/send-otp", {
+          method: "post",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((res) => res.json())
+          .then((data1) => {
+            let x = 5;
+            otp.classList.remove("hidden");
+            obtn.classList.remove("hidden");
+            btn.classList.add("hidden");
+            email.classList.add("cursor-no-drop");
+            email.disabled = true;
+            btn.disabled = true;
+            msg.classList.remove("hidden");
+            const y = setInterval(() => {
+              msg.textContent = `Resend OTP in ${x--} seconds`;
+              if (x <= -1) {
+                clearInterval(y);
+                msg.disabled = true;
+                btn.classList.remove("hidden");
+                btn.disabled = false;
+                btn.textContent = "Resend OTP";
+                msg.textContent = "";
+                msg.classList.add("hidden");
+              }
+            }, 1000);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+
+      obtn.addEventListener("click", (e) => {
+        let data = {
+          otp: otp.value,
+        };
+        fetch("/verify-otp", {
+          method: "post",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((res) => res.json())
+          .then((data1) => {
+            msg.classList.remove("hidden");
+            msg.textContent = data1;
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+    </script>
   </body>
 </html>
