@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&display=swap"
       rel="stylesheet"
     />
-    <title>Login</title>
+    <title>SignUp</title>
   </head>
   <body style="font-family: 'Poppins', sans-serif" class="h-full">
     <!--
@@ -43,7 +43,7 @@
         <div>
           <img
             class="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+            src="https://tailwindui.com/img/logos/mark.svg?color=fuchsia&shade=600"
             alt="Your Company"
           />
           <h2
@@ -55,7 +55,7 @@
             Or
             <a
               href="../login"
-              class="font-medium text-indigo-600 hover:text-red-500"
+              class="font-medium text-fuchsia-600 hover:text-red-500"
               >Already have an account</a
             >
           </p>
@@ -69,9 +69,9 @@
                 id="email-address"
                 name="email"
                 type="email"
-                autocomplete="email"
+                autocomplete="off"
                 required
-                class="relative disabled:opacity-75 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                class="relative disabled:opacity-75 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-fuchsia-500 focus:outline-none focus:ring-fuchsia-500 sm:text-sm"
                 placeholder="Email address"
               />
             </div>
@@ -85,12 +85,12 @@
             <button
               id="btn"
               type="submit"
-              class="group disabled:opacity-75 disabled:cursor-not-allowed relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              class="group disabled:opacity-75 disabled:cursor-not-allowed relative flex w-full justify-center rounded-md border border-transparent bg-fuchsia-600 py-2 px-4 text-sm font-medium text-white hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2"
             >
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <!-- Heroicon name: mini/lock-closed -->
                 <svg
-                  class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                  class="h-5 w-5 text-fuchsia-500 group-hover:text-fuchsia-400"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -117,7 +117,7 @@
               type="otp"
               autocomplete="otp"
               required
-              class="hidden relative w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm transition-all"
+              class="hidden relative w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-fuchsia-500 focus:outline-none focus:ring-fuchsia-500 sm:text-sm transition-all"
               placeholder="OTP"
             />
           </div>
@@ -125,12 +125,12 @@
         <button
           id="obtn"
           type="submit"
-          class="hidden group disabled:opacity-75 relative w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          class="hidden group disabled:opacity-75 relative w-full justify-center rounded-md border border-transparent bg-fuchsia-600 py-2 px-4 text-sm font-medium text-white hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2"
         >
           <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <!-- Heroicon name: mini/lock-closed -->
             <svg
-              class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+              class="h-5 w-5 text-fuchsia-500 group-hover:text-fuchsia-400"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -156,12 +156,12 @@
       const msg = document.getElementById("email-err");
 
       email.addEventListener("keyup", (e) => {
+        if (!msg.classList.contains("hidden")) msg.classList.add("hidden");
         msg.textContent = "";
         if (btn.disabled) btn.disabled = false;
         let data = {
           email: email.value,
         };
-        msg.classList.add("hidden");
         if (email.classList.contains("bg-red-200"))
           email.classList.remove("bg-red-200");
         fetch("/check-user", {
@@ -171,10 +171,12 @@
         })
           .then((res) => res.json())
           .then((data1) => {
-            if (data1) email.classList.add("bg-red-200");
-            msg.classList.remove("hidden");
-            msg.textContent = data1;
-            btn.disabled = true;
+            if (data1.msg) {
+              email.classList.add("bg-red-200");
+              msg.classList.remove("hidden");
+              msg.textContent = data1.msg;
+              btn.disabled = true;
+            }
           });
       });
 

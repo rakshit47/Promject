@@ -49,8 +49,8 @@ exports.verifyOtp = verifyOtp = async (user) => {
   if (otpdb.otp == user.otp) {
     await coll.insertOne({ email: user.email });
     await temp.deleteOne({ email: user.email });
-    return { status: 201, msg: "New User Account created" };
-  } else return { status: 403, msg: "OTP doesn't match" };
+    return { status: 201, msg: "New User Account created", stats: true };
+  } else return { status: 403, msg: "OTP doesn't match", stats: false };
 };
 // let data = temp.findOne({ email: "raj@mail.com" });
 

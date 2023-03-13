@@ -26,7 +26,7 @@ app.post("/check-user", (req, res) => {
   // console.log(req.body.email);
   db.checkUser(req.body)
     .then((r) => {
-      res.status(r.status).json(r.msg);
+      res.status(r.status).json({msg: r.msg});
     })
     .catch((err) => {
       res.send(err);
@@ -56,7 +56,7 @@ app.post("/send-otp", (req, res) => {
 app.post("/verify-otp", (req, res) => {
   user.otp = req.body.otp;
   db.verifyOtp(user).then((r) => {
-    res.status(r.status).send(r.msg);
+    res.status(r.status).send({msg: r.msg});
   });
 });
 
